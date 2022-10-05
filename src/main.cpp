@@ -16,6 +16,7 @@
 
 #include "shaders/intersectionshader.h"
 #include "shaders/depthshader.h"
+#include "shaders/normalshader.h"
 
 
 using namespace std;
@@ -167,7 +168,7 @@ int main()
     //Get the proper shader
     Shader* intersection_shader = new IntersectionShader (intersectionColor, bgColor);
     Shader* depth_shader = new DepthShader(depthColor, maxDistance, bgColor);
-    
+    Shader* normal_shader = new NormalShader(bgColor);
 
     // Build the scene---------------------------------------------------------
     // 
@@ -183,11 +184,16 @@ int main()
     //Paint Image ONLY TASK 1
     //PaintImage(film);
 
-    // Launch some rays! TASK 2,3,...
-    //raytrace(cam, intersection_shader, film, objectsList, lightSourceList);
-    raytrace(cam, depth_shader, film, objectsList, lightSourceList);
-
+    // Launch some rays!
     
+    // TASK 2
+    //raytrace(cam, intersection_shader, film, objectsList, lightSourceList);
+
+    //TASK 3
+    //raytrace(cam, depth_shader, film, objectsList, lightSourceList);
+
+    //TASK 4
+    raytrace(cam, normal_shader, film, objectsList, lightSourceList);
 
     // Save the final result to file
     std::cout << "\n\nSaving the result to file output.bmp\n" << std::endl;
