@@ -8,6 +8,11 @@ double Utils::degreesToRadians(double degrees)
     return degrees * M_PI / 180.0;
 }
 
+double Utils::computeDistance(const Vector3D& a, const Vector3D& b)
+{
+    return sqrt(pow(a.x-b.x,2) + pow(a.y - b.y, 2) + pow(a.z - b.z, 2));
+}
+
 Vector3D Utils::multiplyPerCanal(const Vector3D &v1, const Vector3D &v2)
 {
     //return Vector3D(v1.x*v2.x, v1.y*v2.y, v1.z*v2.z);
@@ -36,19 +41,12 @@ bool Utils::getClosestIntersection(const Ray& cameraRay, const std::vector<Shape
 
     //Support variables
     bool hit = false;
-    Intersection current_intersection = Intersection();
 
     for (size_t objIndex = 0; objIndex < objectsList.size(); objIndex++)
     {
         const Shape* current_object = objectsList.at(objIndex);
-        if (current_object->rayIntersectP(cameraRay))
-        {
-            hit = true;
-            current_object->rayIntersect(cameraRay, current_intersection);
-            
-        }
+        if (current_object->rayIntersect(cameraRay, its)) hit = true;  
     }
-    
 
     return hit;
 }

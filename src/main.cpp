@@ -158,12 +158,16 @@ int main()
     film = new Film(720, 512);
 
 
-    // Declare the shader
+    // Declare the shader attributes
     Vector3D bgColor(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
     Vector3D intersectionColor(1,0,0);
+    Vector3D depthColor(0, 1, 0.4);
+    double maxDistance = 8.0;
     
-    Shader *shader = new IntersectionShader (intersectionColor, bgColor);
-  
+    //Get the proper shader
+    Shader* intersection_shader = new IntersectionShader (intersectionColor, bgColor);
+    Shader* depth_shader = new DepthShader(depthColor, maxDistance, bgColor);
+    
 
     // Build the scene---------------------------------------------------------
     // 
@@ -180,7 +184,8 @@ int main()
     //PaintImage(film);
 
     // Launch some rays! TASK 2,3,...
-    raytrace(cam, shader, film, objectsList, lightSourceList);
+    //raytrace(cam, intersection_shader, film, objectsList, lightSourceList);
+    raytrace(cam, depth_shader, film, objectsList, lightSourceList);
 
     
 

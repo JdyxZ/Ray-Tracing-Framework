@@ -19,6 +19,7 @@ public:
     static bool hasIntersection(const Ray &ray, const std::vector<Shape*> &objectsList);
     static Vector3D scalarToRGB(double scalar);
     static double degreesToRadians(double degrees);
+    static double computeDistance(const Vector3D& a, const Vector3D& b);
 
     static Vector3D multiplyPerCanal(const Vector3D &v1, const Vector3D &v2);
 //    static Vector3D sumPerCanal(const Vector3D &v1, const Vector3D &v2);
