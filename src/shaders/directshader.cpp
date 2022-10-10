@@ -26,7 +26,7 @@ Vector3D DirectShader::computeColor(const Ray & r, const std::vector<Shape*>&obj
         for (int i = 0; i < lsList.size(); i++) //Mejorar loop para evitar crear iterativamente una instancia de PointLightSource.
         {
             PointLightSource l = lsList[i];
-            wi = (p - l.getPosition()).normalized();
+            wi = (l.getPosition() - p).normalized();
             visibility = dot(n, wi) > 0.0 ? true : false;
 
             //Check that light is hitting the above surface of the shape
@@ -42,8 +42,9 @@ Vector3D DirectShader::computeColor(const Ray & r, const std::vector<Shape*>&obj
                 color += incident_light * reflectance;
             }
         }
-
-        return color;
+        
+        //Clamp the color to avoid artifacts
+        return color.clamp();
     }
     else
         return bgColor;

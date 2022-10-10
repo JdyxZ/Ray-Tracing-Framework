@@ -2,6 +2,7 @@
 #define VECTOR3D_H
 
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -33,6 +34,7 @@ struct Vector3D
     double lengthSq()    const;
     Vector3D normalized() const;
     void print() const;
+    Vector3D clamp() const;
 
     // Structure data
     double x, y, z;

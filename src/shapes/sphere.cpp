@@ -1,6 +1,6 @@
 #include "sphere.h"
 
-Sphere::Sphere(const double radius_, const Matrix4x4 &t_, Material *material_)
+Sphere::Sphere(const double radius_, Matrix4x4* t_, Material *material_)
     : Shape(t_, material_), radius(radius_)
 { }
 
@@ -151,6 +151,12 @@ bool Sphere::rayIntersectP(const Ray &ray) const
     ray.maxT = tHit;
 
     return true;
+}
+
+bool Sphere::pointInside(const Vector3D& p) const
+{
+    double point_distance = (p - center).length();
+    return point_distance < radius;
 }
 
 std::string Sphere::toString() const

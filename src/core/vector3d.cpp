@@ -125,6 +125,11 @@ void Vector3D::print() const
     cout << z << endl << endl;
 }
 
+Vector3D Vector3D::clamp() const
+{
+    return Vector3D(std::clamp(x, 0.0, 1.0), std::clamp(y, 0.0, 1.0), std::clamp(z, 0.0, 1.0));
+}
+
 // Stream insertion operator
 std::ostream& operator<<(std::ostream& out, const Vector3D &v)
 {

@@ -1,8 +1,9 @@
 #include "shape.h"
 
-Shape::Shape(const Matrix4x4 &t_, Material *material_)
+Shape::Shape(Matrix4x4 *t_, Material *material_)
 {
-    objectToWorld = t_;
+    center = t_->getTranslation();
+    objectToWorld = *t_;
     objectToWorld.inverse(worldToObject);
     material = material_;
 }
