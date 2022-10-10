@@ -3,7 +3,6 @@
 
 #include "shader.h"
 
-
 class DepthShader : public Shader
 {
 public:

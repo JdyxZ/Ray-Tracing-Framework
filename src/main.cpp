@@ -40,13 +40,12 @@ void buildSceneSphere(Camera*& cam, Film*& film, std::vector<Shape*>*& objectsLi
     Material* material1 = new Phong (Vector3D(0.2, 0.7, 0.3), Vector3D(0.2, 0.6, 0.2), 50.0);
     Material* material2 = new Phong(Vector3D(0.5922, 0.0166, 0.0000), Vector3D(0.5974, 0.2084, 0.2084), 10.0);
     Material* material3 = new Phong(Vector3D(0.92, 0.34, 0.7), Vector3D(0.85, 0.76, 0.28), 70.0);
-
     
     /* ******* */
     /* Objects */
     /* ******* */
-    // Create a heterogeneous list of objects of type shape
-    // (some might be triangles, other spheres, plans, etc)
+
+    // Create a heterogeneous list of objects of type shape (some might be triangles, other spheres, plans, etc)
     objectsList = new std::vector<Shape*>;
 
     // Define and place a sphere
@@ -69,17 +68,19 @@ void buildSceneSphere(Camera*& cam, Film*& film, std::vector<Shape*>*& objectsLi
     objectsList->push_back(s2);
     objectsList->push_back(s3);
 
-
     /* ****** */
     /* Lights */
     /* ****** */
-    //
+    
     // ADD YOUR LIGHT SOURCES HERE
-    // (...)
-    //
+    PointLightSource light1 = PointLightSource(Vector3D(0.0, 0.0, 7.0), Vector3D(1.0, 1.0, 1.0));
+    PointLightSource light2 = PointLightSource(Vector3D(1.0, -1.0, 2.5), Vector3D(4.0, 1.0, 3.0));
+    PointLightSource light3 = PointLightSource(Vector3D(0.5, -1.0, 4.5), Vector3D(5.0, 4.0, 8.0));    
+    
     // DO NOT FORGET TO STORE THE LIGHT SOURCES IN THE "lightSourceList"
-    // (...)
-    //
+    lightSourceList->push_back(light1);
+    lightSourceList->push_back(light2);
+    lightSourceList->push_back(light3);
     
 }
 
