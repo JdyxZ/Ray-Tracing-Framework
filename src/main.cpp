@@ -76,9 +76,9 @@ void buildSceneSphere(Camera*& cam, Film*& film, std::vector<Shape*>*& objectsLi
     lightSourceList = new std::vector<PointLightSource>;
     
     // ADD YOUR LIGHT SOURCES HERE
-    PointLightSource light1 = PointLightSource(Vector3D(0.0, 1.0, 3.0), Vector3D(5.0, 2.5, 1.0));
-    PointLightSource light2 = PointLightSource(Vector3D(2.0, 1.0, 2.5), Vector3D(2.5, 5.0, 1.0));
-    PointLightSource light3 = PointLightSource(Vector3D(-3.0, 0.0, 1.5), Vector3D(1.0, 2.5, 5.0));    
+    PointLightSource light1 = PointLightSource(Vector3D(1.0, 1.5, 3.5), Vector3D(5.0, 2.5, 1.0));
+    PointLightSource light2 = PointLightSource(Vector3D(2.0, 0.0, 3.0), Vector3D(2.5, 5.0, 1.0));
+    PointLightSource light3 = PointLightSource(Vector3D(-1.5, -1.5, 2.0), Vector3D(1.0, 2.5, 5.0));    
     
     // DO NOT FORGET TO STORE THE LIGHT SOURCES IN THE "lightSourceList"
     lightSourceList->push_back(light1);
