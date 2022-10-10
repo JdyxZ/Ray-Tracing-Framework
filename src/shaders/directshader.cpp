@@ -42,9 +42,8 @@ Vector3D DirectShader::computeColor(const Ray & r, const std::vector<Shape*>&obj
                 color += incident_light * reflectance;
             }
         }
-        
-        //Clamp the color to avoid artifacts
-        return color.clamp();
+
+        return color;
     }
     else
         return bgColor;
