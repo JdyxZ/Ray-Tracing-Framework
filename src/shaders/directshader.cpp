@@ -13,34 +13,35 @@ Vector3D DirectShader::computeColor(const Ray & r, const std::vector<Shape*>&obj
     if (Utils::getClosestIntersection(r, objList, intersection))
     {
         //Declare variables
-        Vector3D n;
-        Vector3D p;
+        Vector3D n = intersection.normal;
+        Vector3D p = intersection.itsPoint;
+        Vector3D wo = -r.d;
         Vector3D wi;
-        Vector3D wo;
         Vector3D incident_light;
         Vector3D reflectance;
         bool visibility;
         Vector3D color = Vector3D();
 
         //For each light
-        for (int i = 0; i < lsList.size(); i++)
+        for (int i = 0; i < lsList.size(); i++) //Mejorar loop para evitar crear iterativamente una instancia de PointLightSource.
         {
             PointLightSource l = lsList[i];
-            n = intersection.normal;
-            p = intersection.itsPoint;
             wi = p - l.getPosition();
-            wo = -r.d;
             visibility = dot(n, wi) > 0.0 ? true : false;
 
             //Check that light is hitting the above surface of the shape
             if (visibility)
             {
+                //Normalize vectors
+                n.normalized();
+                wo.normalized();
+                wi.normalized();
+
                 //Incident light
                 incident_light = l.getIntensity(p);
 
                 //Reflectance
-                Phong m = (Phong)intersection.shape->getMaterial(); //Hay que downcastear
-                reflectance = m.getReflectance(n, wo, wi);
+                reflectance = intersection.shape->getMaterial().getReflectance(n,wo,wi);
                 
                 //Direct illumination
                 color += incident_light + reflectance;

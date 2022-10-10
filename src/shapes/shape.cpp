@@ -7,7 +7,7 @@ Shape::Shape(const Matrix4x4 &t_, Material *material_)
     material = material_;
 }
 
-const Material& Shape::getMaterial() const
+Material& Shape::getMaterial() const
 {
     return *material;
 }

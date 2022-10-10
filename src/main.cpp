@@ -17,7 +17,7 @@
 #include "shaders/intersectionshader.h"
 #include "shaders/depthshader.h"
 #include "shaders/normalshader.h"
-
+#include "shaders/directshader.h"
 
 using namespace std;
 
@@ -71,11 +71,14 @@ void buildSceneSphere(Camera*& cam, Film*& film, std::vector<Shape*>*& objectsLi
     /* ****** */
     /* Lights */
     /* ****** */
+
+    //Initialize lights list
+    lightSourceList = new std::vector<PointLightSource>;
     
     // ADD YOUR LIGHT SOURCES HERE
-    PointLightSource light1 = PointLightSource(Vector3D(0.0, 0.0, 7.0), Vector3D(1.0, 1.0, 1.0));
-    PointLightSource light2 = PointLightSource(Vector3D(1.0, -1.0, 2.5), Vector3D(4.0, 1.0, 3.0));
-    PointLightSource light3 = PointLightSource(Vector3D(0.5, -1.0, 4.5), Vector3D(5.0, 4.0, 8.0));    
+    PointLightSource light1 = PointLightSource(Vector3D(0.0, 0.0, 7.0), Vector3D(1.0, 0.0, 0.0));
+    PointLightSource light2 = PointLightSource(Vector3D(1.0, -1.0, 2.5), Vector3D(1.0, 0.0, 0.0));
+    PointLightSource light3 = PointLightSource(Vector3D(0.5, -1.0, 4.5), Vector3D(1.0, 0.0, 0.0));
     
     // DO NOT FORGET TO STORE THE LIGHT SOURCES IN THE "lightSourceList"
     lightSourceList->push_back(light1);
@@ -169,6 +172,7 @@ int main()
     Shader* intersection_shader = new IntersectionShader (intersectionColor, bgColor);
     Shader* depth_shader = new DepthShader(depthColor, maxDistance, bgColor);
     Shader* normal_shader = new NormalShader(bgColor);
+    Shader* direct_shader = new DirectShader(bgColor);
 
     // Build the scene---------------------------------------------------------
     // 
@@ -193,7 +197,10 @@ int main()
     //raytrace(cam, depth_shader, film, objectsList, lightSourceList);
 
     //TASK 4
-    raytrace(cam, normal_shader, film, objectsList, lightSourceList);
+    //raytrace(cam, normal_shader, film, objectsList, lightSourceList);
+
+    //TASK 5
+    raytrace(cam, direct_shader, film, objectsList, lightSourceList);
 
     // Save the final result to file
     std::cout << "\n\nSaving the result to file output.bmp\n" << std::endl;
