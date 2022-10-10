@@ -52,6 +52,12 @@ Vector3D Vector3D::operator/(const double a) const
     return Vector3D(x/a, y/a, z/a);
 }
 
+// Raise a vector to the n th power
+Vector3D Vector3D::operator^(const double n) const
+{
+    return Vector3D(pow(x, n), pow(y, n), pow(z, n));
+}
+
 // Add a vector to the current one
 Vector3D& Vector3D::operator+=(const Vector3D &v)
 {

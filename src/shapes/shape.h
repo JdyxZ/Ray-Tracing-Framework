@@ -5,6 +5,7 @@
 #include "../core/vector3d.h"
 #include "../core/ray.h"
 #include "../materials/material.h"
+#include "../materials/phong.h"
 #include "../core/intersection.h"
 
 class Shape

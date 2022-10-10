@@ -17,13 +17,11 @@
 #include "shaders/intersectionshader.h"
 #include "shaders/depthshader.h"
 #include "shaders/normalshader.h"
-
+#include "shaders/directshader.h"
 
 using namespace std;
 
-void buildSceneSphere(Camera*& cam, Film*& film,
-    std::vector<Shape*>*& objectsList,
-    std::vector<PointLightSource>*& lightSourceList)
+void buildSceneSphere(Camera*& cam, Film*& film, std::vector<Shape*>*& objectsList, std::vector<PointLightSource>*& lightSourceList)
 {
     /* **************************** */
       /* Declare and place the camera */
@@ -39,48 +37,53 @@ void buildSceneSphere(Camera*& cam, Film*& film,
     /* ************************** */
     /* DEFINE YOUR MATERIALS HERE */
     /* ************************** */
-    // (...)
-    //  EXAMPLE:  Material *green_50 = new Phong (Vector3D(0.2, 0.7, 0.3), Vector3D(0.2, 0.6, 0.2), 50);
-
-
+    Material* material1 = new Phong (Vector3D(0.2, 0.7, 0.3), Vector3D(0.2, 0.6, 0.2), 1.0);
+    Material* material2 = new Phong(Vector3D(0.5922, 0.0166, 0.0000), Vector3D(0.5974, 0.2084, 0.2084), 1.0);
+    Material* material3 = new Phong(Vector3D(0.92, 0.34, 0.7), Vector3D(0.85, 0.76, 0.28), 1.0);
+    
     /* ******* */
     /* Objects */
     /* ******* */
-    // Create a heterogeneous list of objects of type shape
-    // (some might be triangles, other spheres, plans, etc)
+
+    // Create a heterogeneous list of objects of type shape (some might be triangles, other spheres, plans, etc)
     objectsList = new std::vector<Shape*>;
 
     // Define and place a sphere
     Matrix4x4 sphereTransform1;
     sphereTransform1 = sphereTransform1.translate(Vector3D(-1.0, -0.5, 2 * std::sqrt(2.0)));
-    Shape* s1 = new Sphere(0.25, sphereTransform1, NULL);
+    Shape* s1 = new Sphere(0.25, sphereTransform1, material1);
 
     // Define and place a sphere
     Matrix4x4 sphereTransform2;
     sphereTransform2 = sphereTransform2.translate(Vector3D(1.0, 0.0, 6));
-    Shape* s2 = new Sphere(1, sphereTransform2, NULL);
+    Shape* s2 = new Sphere(1, sphereTransform2, material2);
 
     // Define and place a sphere
     Matrix4x4 sphereTransform3;
     sphereTransform3 = sphereTransform3.translate(Vector3D(0.3, -0.75, 3.5));
-    Shape* s3 = new Sphere(0.25, sphereTransform3, NULL);
+    Shape* s3 = new Sphere(0.25, sphereTransform3, material3);
 
     // Store the objects in the object list
     objectsList->push_back(s1);
     objectsList->push_back(s2);
     objectsList->push_back(s3);
 
-
     /* ****** */
     /* Lights */
     /* ****** */
-    //
+
+    //Initialize lights list
+    lightSourceList = new std::vector<PointLightSource>;
+    
     // ADD YOUR LIGHT SOURCES HERE
-    // (...)
-    //
+    PointLightSource light1 = PointLightSource(Vector3D(0.0, 0.0, 7.0), Vector3D(0.1, 0.0, 0.0));
+    PointLightSource light2 = PointLightSource(Vector3D(1.0, -1.0, 2.5), Vector3D(0.1, 0.0, 0.0));
+    PointLightSource light3 = PointLightSource(Vector3D(0.5, -1.0, 4.5), Vector3D(0.1, 0.0, 0.0));
+    
     // DO NOT FORGET TO STORE THE LIGHT SOURCES IN THE "lightSourceList"
-    // (...)
-    //
+    lightSourceList->push_back(light1);
+    //lightSourceList->push_back(light2);
+    //lightSourceList->push_back(light3);
     
 }
 
@@ -169,6 +172,7 @@ int main()
     Shader* intersection_shader = new IntersectionShader (intersectionColor, bgColor);
     Shader* depth_shader = new DepthShader(depthColor, maxDistance, bgColor);
     Shader* normal_shader = new NormalShader(bgColor);
+    Shader* direct_shader = new DirectShader(bgColor);
 
     // Build the scene---------------------------------------------------------
     // 
@@ -193,7 +197,10 @@ int main()
     //raytrace(cam, depth_shader, film, objectsList, lightSourceList);
 
     //TASK 4
-    raytrace(cam, normal_shader, film, objectsList, lightSourceList);
+    //raytrace(cam, normal_shader, film, objectsList, lightSourceList);
+
+    //TASK 5
+    raytrace(cam, direct_shader, film, objectsList, lightSourceList);
 
     // Save the final result to file
     std::cout << "\n\nSaving the result to file output.bmp\n" << std::endl;
