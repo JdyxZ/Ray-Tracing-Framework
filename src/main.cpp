@@ -21,9 +21,7 @@
 
 using namespace std;
 
-void buildSceneSphere(Camera*& cam, Film*& film,
-    std::vector<Shape*>*& objectsList,
-    std::vector<PointLightSource>*& lightSourceList)
+void buildSceneSphere(Camera*& cam, Film*& film, std::vector<Shape*>*& objectsList, std::vector<PointLightSource>*& lightSourceList)
 {
     /* **************************** */
       /* Declare and place the camera */
@@ -39,10 +37,11 @@ void buildSceneSphere(Camera*& cam, Film*& film,
     /* ************************** */
     /* DEFINE YOUR MATERIALS HERE */
     /* ************************** */
-    // (...)
-    //  EXAMPLE:  Material *green_50 = new Phong (Vector3D(0.2, 0.7, 0.3), Vector3D(0.2, 0.6, 0.2), 50);
+    Material* material1 = new Phong (Vector3D(0.2, 0.7, 0.3), Vector3D(0.2, 0.6, 0.2), 50.0);
+    Material* material2 = new Phong(Vector3D(0.5922, 0.0166, 0.0000), Vector3D(0.5974, 0.2084, 0.2084), 10.0);
+    Material* material3 = new Phong(Vector3D(0.92, 0.34, 0.7), Vector3D(0.85, 0.76, 0.28), 70.0);
 
-
+    
     /* ******* */
     /* Objects */
     /* ******* */
@@ -53,17 +52,17 @@ void buildSceneSphere(Camera*& cam, Film*& film,
     // Define and place a sphere
     Matrix4x4 sphereTransform1;
     sphereTransform1 = sphereTransform1.translate(Vector3D(-1.0, -0.5, 2 * std::sqrt(2.0)));
-    Shape* s1 = new Sphere(0.25, sphereTransform1, NULL);
+    Shape* s1 = new Sphere(0.25, sphereTransform1, material1);
 
     // Define and place a sphere
     Matrix4x4 sphereTransform2;
     sphereTransform2 = sphereTransform2.translate(Vector3D(1.0, 0.0, 6));
-    Shape* s2 = new Sphere(1, sphereTransform2, NULL);
+    Shape* s2 = new Sphere(1, sphereTransform2, material2);
 
     // Define and place a sphere
     Matrix4x4 sphereTransform3;
     sphereTransform3 = sphereTransform3.translate(Vector3D(0.3, -0.75, 3.5));
-    Shape* s3 = new Sphere(0.25, sphereTransform3, NULL);
+    Shape* s3 = new Sphere(0.25, sphereTransform3, material3);
 
     // Store the objects in the object list
     objectsList->push_back(s1);
