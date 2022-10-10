@@ -37,9 +37,9 @@ void buildSceneSphere(Camera*& cam, Film*& film, std::vector<Shape*>*& objectsLi
     /* ************************** */
     /* DEFINE YOUR MATERIALS HERE */
     /* ************************** */
-    Material* material1 = new Phong (Vector3D(0.2, 0.7, 0.3), Vector3D(0.2, 0.6, 0.2), 50.0);
-    Material* material2 = new Phong(Vector3D(0.5922, 0.0166, 0.0000), Vector3D(0.5974, 0.2084, 0.2084), 10.0);
-    Material* material3 = new Phong(Vector3D(0.92, 0.34, 0.7), Vector3D(0.85, 0.76, 0.28), 70.0);
+    Material* material1 = new Phong (Vector3D(0.2, 0.7, 0.3), Vector3D(0.2, 0.6, 0.2), 1.0);
+    Material* material2 = new Phong(Vector3D(0.5922, 0.0166, 0.0000), Vector3D(0.5974, 0.2084, 0.2084), 1.0);
+    Material* material3 = new Phong(Vector3D(0.92, 0.34, 0.7), Vector3D(0.85, 0.76, 0.28), 1.0);
     
     /* ******* */
     /* Objects */
@@ -76,14 +76,14 @@ void buildSceneSphere(Camera*& cam, Film*& film, std::vector<Shape*>*& objectsLi
     lightSourceList = new std::vector<PointLightSource>;
     
     // ADD YOUR LIGHT SOURCES HERE
-    PointLightSource light1 = PointLightSource(Vector3D(0.0, 0.0, 7.0), Vector3D(1.0, 0.0, 0.0));
-    PointLightSource light2 = PointLightSource(Vector3D(1.0, -1.0, 2.5), Vector3D(1.0, 0.0, 0.0));
-    PointLightSource light3 = PointLightSource(Vector3D(0.5, -1.0, 4.5), Vector3D(1.0, 0.0, 0.0));
+    PointLightSource light1 = PointLightSource(Vector3D(0.0, 0.0, 7.0), Vector3D(0.1, 0.0, 0.0));
+    PointLightSource light2 = PointLightSource(Vector3D(1.0, -1.0, 2.5), Vector3D(0.1, 0.0, 0.0));
+    PointLightSource light3 = PointLightSource(Vector3D(0.5, -1.0, 4.5), Vector3D(0.1, 0.0, 0.0));
     
     // DO NOT FORGET TO STORE THE LIGHT SOURCES IN THE "lightSourceList"
     lightSourceList->push_back(light1);
-    lightSourceList->push_back(light2);
-    lightSourceList->push_back(light3);
+    //lightSourceList->push_back(light2);
+    //lightSourceList->push_back(light3);
     
 }
 

@@ -21,7 +21,7 @@ public:
     virtual bool rayIntersectP(const Ray &ray) const = 0;
 
     // Return the material associated with the shape
-    Material& getMaterial() const;
+    const Material& getMaterial() const;
 
 protected:
     Matrix4x4 objectToWorld;
