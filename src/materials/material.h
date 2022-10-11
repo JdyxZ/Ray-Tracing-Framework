@@ -14,11 +14,6 @@ public:
     virtual bool hasTransmission() const = 0;
     virtual bool hasDiffuseOrGlossy() const = 0;
     virtual double getIndexOfRefraction() const;
-
-protected:
-    Vector3D kd;
-    Vector3D ks;
-    double shininess;
 };
 
 
