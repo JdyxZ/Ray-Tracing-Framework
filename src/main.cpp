@@ -92,7 +92,7 @@ void buildSceneSphere(Camera*& cam, Film*& film, std::vector<Shape*>*& objectsLi
         for (int j = 0; j < objectsList->size(); j++)
         {
             Shape* current_shape = objectsList->at(j);
-            bool light_inside = current_shape->pointInside(current_light.getPosition());
+            bool light_inside = current_shape->isPointInside(current_light.getPosition());
             if (light_inside) cout << "Light " << i << " is inside the shape " << j << endl;
         }
     }

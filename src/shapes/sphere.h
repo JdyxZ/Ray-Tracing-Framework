@@ -17,7 +17,7 @@ public:
 
     bool rayIntersect(const Ray &ray, Intersection &its) const;
     bool rayIntersectP(const Ray &ray) const;
-    bool pointInside(const Vector3D& p) const;
+    bool isPointInside(const Vector3D& p) const;
     std::string toString() const;
 
 private:

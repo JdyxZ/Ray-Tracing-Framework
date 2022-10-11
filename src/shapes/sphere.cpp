@@ -153,7 +153,7 @@ bool Sphere::rayIntersectP(const Ray &ray) const
     return true;
 }
 
-bool Sphere::pointInside(const Vector3D& p) const
+bool Sphere::isPointInside(const Vector3D& p) const
 {
     double point_distance = (p - center).length();
     return point_distance < radius;

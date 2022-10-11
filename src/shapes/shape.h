@@ -19,7 +19,7 @@ public:
     // Ray/shape intersection methods
     virtual bool rayIntersect(const Ray &ray, Intersection &its) const =0 ;
     virtual bool rayIntersectP(const Ray &ray) const = 0;
-    virtual bool pointInside(const Vector3D& p) const = 0;
+    virtual bool isPointInside(const Vector3D& p) const = 0;
 
     // Return the material associated with the shape
     const Material& getMaterial() const;

@@ -34,7 +34,7 @@ struct Vector3D
     double lengthSq()    const;
     Vector3D normalized() const;
     void print() const;
-    Vector3D clamp() const;
+    Vector3D clamp(double low, double high) const;
 
     // Structure data
     double x, y, z;
