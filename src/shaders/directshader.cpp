@@ -1,4 +1,5 @@
 #include "directshader.h"
+#include "../core/utils.h"
 
 DirectShader::DirectShader(Vector3D bgColor_) :
     Shader(bgColor_)
@@ -13,22 +14,35 @@ Vector3D DirectShader::computeColor(const Ray & r, const std::vector<Shape*>&obj
     if (Utils::getClosestIntersection(r, objList, intersection))
     {
         //Declare variables
-        Vector3D n = intersection.normal.normalized();
-        Vector3D p = intersection.itsPoint;
-        Vector3D wo = -r.d.normalized();
+        const Shape* shape = intersection.shape;
+        const Vector3D n = intersection.normal.normalized();
+        const Vector3D p = intersection.itsPoint;
+        const Vector3D wo = -r.d.normalized();
         Vector3D wi;
+        double light_distance;
         Vector3D incident_light;
         Vector3D reflectance;
         bool visibility;
         Vector3D color = Vector3D();
 
-        //For each light
-        for (int i = 0; i < lsList.size(); i++) //Mejorar loop para evitar crear iterativamente una instancia de PointLightSource.
-        {
-            PointLightSource l = lsList[i];
-            wi = (l.getPosition() - p).normalized();
-            visibility = dot(n, wi) > 0.0 ? true : false;
+        //Check material
+        if (!shape->getMaterial().hasDiffuseOrGlossy())
+            return color;
 
+        //For each light
+        for(const PointLightSource& l : lsList)
+        {
+            //Light vector
+            wi = (l.getPosition() - p);
+            light_distance = wi.length();
+            wi /= light_distance;
+
+            //NdotL
+            const double NdotL = dot(n, wi);
+
+            //Visibility
+            visibility = !Utils::hasIntersection(Ray(p, wi, 0, Epsilon, light_distance), objList);
+            
             //Check that light is hitting the above surface of the shape
             if (visibility)
             {
