@@ -25,20 +25,17 @@
     <Filter Include="src\lightsources">
       <UniqueIdentifier>{2c07ec23-fc64-4302-b7ff-0506345557a7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\materials">
-      <UniqueIdentifier>{5585f4eb-8996-423a-8c7c-71d4c167c2d1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\shaders">
       <UniqueIdentifier>{fa0c3b76-57a5-4039-a49f-6cb7086645d7}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\shapes">
       <UniqueIdentifier>{471790e2-2b7b-4bb4-843a-8f2850c9ecfc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\materials">
+      <UniqueIdentifier>{fd4043ad-be7c-443c-9f45-96f4e9efe3a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\cameras\camera.cpp">
       <Filter>src\cameras</Filter>
     </ClCompile>
@@ -78,9 +75,6 @@
     <ClCompile Include="..\..\src\lightsources\pointlightsource.cpp">
       <Filter>src\lightsources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\materials\material.cpp">
-      <Filter>src\materials</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\shaders\intersectionshader.cpp">
       <Filter>src\shaders</Filter>
     </ClCompile>
@@ -100,6 +94,18 @@
       <Filter>src\shaders</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\shaders\normalshader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\materials\material.cpp">
+      <Filter>src\materials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\materials\phong.cpp">
+      <Filter>src\materials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\directshader.cpp">
       <Filter>src\shaders</Filter>
     </ClCompile>
   </ItemGroup>
@@ -143,9 +149,6 @@
     <ClInclude Include="..\..\src\lightsources\pointlightsource.h">
       <Filter>src\lightsources</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\materials\material.h">
-      <Filter>src\materials</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\shaders\intersectionshader.h">
       <Filter>src\shaders</Filter>
     </ClInclude>
@@ -165,6 +168,15 @@
       <Filter>src\shaders</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\shaders\normalshader.h">
+      <Filter>src\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\materials\material.h">
+      <Filter>src\materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\materials\phong.h">
+      <Filter>src\materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shaders\directshader.h">
       <Filter>src\shaders</Filter>
     </ClInclude>
   </ItemGroup>

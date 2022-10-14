@@ -37,7 +37,7 @@ void buildSceneSphere(Camera*& cam, Film*& film, std::vector<Shape*>*& objectsLi
     /* ************************** */
     /* DEFINE YOUR MATERIALS HERE */
     /* ************************** */
-    Material* material1 = new Phong (Vector3D(0.2, 0.7, 0.3), Vector3D(0.2, 0.6, 0.2), 50.0);
+    Material* material1 = new Phong(Vector3D(0.2, 0.7, 0.3), Vector3D(0.2, 0.6, 0.2), 50.0);
     Material* material2 = new Phong(Vector3D(0.5922, 0.0166, 0.1000), Vector3D(0.5974, 0.2084, 0.2084), 70.0);
     Material* material3 = new Phong(Vector3D(0.65, 0.34, 0.7), Vector3D(0.85, 0.36, 0.28), 35.0);
     

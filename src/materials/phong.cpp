@@ -1,37 +1,47 @@
 #include "phong.h"
-#include "../core/utils.h"
 
-Phong::Phong(Vector3D kd, Vector3D ks, double shininess)
+Phong::Phong() :
+    shininess(50)
 {
-	this->kd = kd;
-	this->ks = ks;
-	this->shininess = shininess;
+    kd = Vector3D(1.0);
+    ks = Vector3D(1.0);
 }
 
-Vector3D Phong::getReflectance(const Vector3D& n, const Vector3D& wo, const Vector3D& wi) const
+Phong::Phong(Vector3D kd_, Vector3D ks_, double shininess_) :
+    shininess(shininess_), kd(kd_), ks(ks_)
 {
-	Vector3D wr = Utils::computeReflectionDirection(-wi, n);
-	Vector3D reflectance = kd * dot(wi,n) + ks * pow(dot(wo, wr), shininess);
-	return reflectance;
+
 }
 
-bool Phong::hasDiffuseOrGlossy() const
-{
-	return kd.x > 0.0 && kd.y > 0.0 && kd.z > 0.0;
-}
 
 
 bool Phong::hasSpecular() const
 {
-	return ks.x > 0.0 && ks.y > 0.0 && ks.z > 0.0;
+    // This material does not have specular component
+    return false;
 }
 
 bool Phong::hasTransmission() const
 {
-	return hasDiffuseOrGlossy() && hasSpecular() && shininess > 0.0;
+    return false;
 }
 
-double Phong::getIndexOfRefraction() const
+bool Phong::hasDiffuseOrGlossy() const
 {
-	return 0.0;
+    return true;
+}
+
+Vector3D Phong::getReflectance(const Vector3D& n, const Vector3D& wo, const Vector3D& wi) const
+{
+    // Compute the perfect reflection direction
+    Vector3D wr = n * 2 * dot(n, wi) - wi;
+    // Compute the cos of the angle between the incident light direction
+    // and the perfect reflection direction
+    double cosWrWo = dot(wr, wo);
+    return kd * std::max(dot(wi, n), 0.0) + ks * pow(cosWrWo, shininess);
+}
+
+Phong::~Phong()
+{
+
 }
