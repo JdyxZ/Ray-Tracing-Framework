@@ -12,18 +12,20 @@ class Shape
 {
 public:
     Shape() = delete;
-    Shape(const Matrix4x4 &t_, Material *material_);
+    Shape(Matrix4x4 *t_, Material *material_);
 
     // Pure virtual function makes this class Abstract class.
 
     // Ray/shape intersection methods
     virtual bool rayIntersect(const Ray &ray, Intersection &its) const =0 ;
     virtual bool rayIntersectP(const Ray &ray) const = 0;
+    virtual bool isPointInside(const Vector3D& p) const = 0;
 
     // Return the material associated with the shape
     const Material& getMaterial() const;
 
 protected:
+    Vector3D center;
     Matrix4x4 objectToWorld;
     Matrix4x4 worldToObject;
     Material *material;

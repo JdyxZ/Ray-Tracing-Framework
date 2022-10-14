@@ -4,6 +4,13 @@
 class Phong : public Material
 {
 public:
+
+	//Phong parameters
+	Vector3D kd; 
+	Vector3D ks;
+	double shininess;
+
+	//Constructor
 	Phong() { kd = Vector3D(), ks = Vector3D(), shininess = 0.0; }
 	Phong(Vector3D kd, Vector3D ks, double shininess);
 

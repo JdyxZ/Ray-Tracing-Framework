@@ -351,6 +351,16 @@ Matrix4x4 Matrix4x4::rotate(const double angleInRad, const Vector3D &axis)
     return mat;
 }
 
+Vector3D Matrix4x4::getTranslation()
+{
+    return Vector3D(data[0][3], data[1][3], data[2][3]);
+}
+
+Vector3D Matrix4x4::getScale()
+{
+    return Vector3D(data[0][0], data[1][1], data[2][2]);
+}
+
 ostream& operator<<(ostream &out, const Matrix4x4 &m)
 {
 

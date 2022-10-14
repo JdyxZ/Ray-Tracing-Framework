@@ -11,12 +11,13 @@ class Sphere : public Shape
 {
 public:
     Sphere() = delete;
-    Sphere(const double radius_, const Matrix4x4 &t, Material *material_);
+    Sphere(const double radius_, Matrix4x4* t, Material *material_);
 
     Vector3D getNormalWorld(const Vector3D &pt_world) const;
 
     bool rayIntersect(const Ray &ray, Intersection &its) const;
     bool rayIntersectP(const Ray &ray) const;
+    bool isPointInside(const Vector3D& p) const;
     std::string toString() const;
 
 private:

@@ -1,8 +1,8 @@
 #include "infiniteplan.h"
 
-InfinitePlan::InfinitePlan(const Vector3D &p0_, const Vector3D &normal_,
-         Material *mat_) :
-    Shape(Matrix4x4(), mat_),
+InfinitePlan::InfinitePlan(const Vector3D& p0_, const Vector3D& normal_,
+    Material* mat_) :
+    Shape(new Matrix4x4(), mat_),
     p0World(p0_), nWorld(normal_.normalized())
 { }
 

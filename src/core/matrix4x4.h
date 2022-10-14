@@ -49,7 +49,8 @@ struct Matrix4x4
     static Matrix4x4 translate(const Vector3D &delta);
     static Matrix4x4 scale(const Vector3D &scalingVector);
     static Matrix4x4 rotate(const double angleInRad, const Vector3D &axis);
-
+    Vector3D getTranslation();
+    Vector3D getScale();
 
     // Structure data
     double data[4][4];
