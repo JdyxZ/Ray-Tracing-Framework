@@ -17,7 +17,7 @@ Vector3D Phong::getReflectance(const Vector3D& n, const Vector3D& wo, const Vect
 
 bool Phong::hasDiffuseOrGlossy() const
 {
-	return kd.x > 0.0 && kd.y > 0.0 && kd.z > 0.0;
+	return true;
 }
 
 

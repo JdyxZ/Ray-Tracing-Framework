@@ -23,6 +23,7 @@ struct Vector3D
     Vector3D operator^(const double n) const;
 
     Vector3D operator-() const;
+    bool operator==(const Vector3D&v) const;
 
     Vector3D& operator+=(const Vector3D &v);
     Vector3D& operator-=(const Vector3D &v);

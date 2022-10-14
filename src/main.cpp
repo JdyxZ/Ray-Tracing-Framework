@@ -99,7 +99,6 @@ void buildSceneSphere(Camera*& cam, Film*& film, std::vector<Shape*>*& objectsLi
     
 }
 
-
 void buildSceneCornellBox(Camera*& cam, Film*& film,
     std::vector<Shape*>*& objectsList, std::vector<PointLightSource>*& lightSourceList)
 {
@@ -118,9 +117,9 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     Material* greenDiffuse = new Phong(Vector3D(0.2, 0.7, 0.3), Vector3D(0, 0, 0), 100);
     Material* greyDiffuse = new Phong(Vector3D(0.8, 0.8, 0.8), Vector3D(0, 0, 0), 100);
     Material* blueDiffuse = new Phong(Vector3D(0.3, 0.2, 0.7), Vector3D(0, 0, 0), 100);
-    //Material* transmissive = new Transmissive(1.1, Vector3D(1));
-    //Material* mirror = new Mirror(Vector3D(1, 0.9, 0.85));
-    //Material* red_100 = new Phong(Vector3D(0.7, 0.2, 0.3), Vector3D(0.7, 0.7, 0.2), 100);
+    Material* transmissive = new Phong(Vector3D(1, 1, 0.2), Vector3D(1, 1, 0.2), 20);
+    Material* mirror = new Phong(Vector3D(0.0, 0.9, 0.9), Vector3D(0.1, 0.9, 0.9), 50);
+    Material* red_100 = new Phong(Vector3D(0.7, 0.2, 0.3), Vector3D(0.7, 0.7, 0.2), 100);
 
     /* ******* */
     /* Objects */
@@ -129,21 +128,18 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     double offset = 3.0;
     Matrix4x4 idTransform;
     // Construct the Cornell Box
-    /*
-    Shape* leftPlan = new InfinitePlane(Vector3D(-offset, 0, 0), Vector3D(1, 0, 0), redDiffuse);
-    Shape* rightPlan = new InfinitePlane(Vector3D(offset, 0, 0), Vector3D(-1, 0, 0), greenDiffuse);
-    Shape* topPlan = new InfinitePlane(Vector3D(0, offset, 0), Vector3D(0, -1, 0), greyDiffuse);
-    Shape* bottomPlan = new InfinitePlane(Vector3D(0, -offset, 0), Vector3D(0, 1, 0), greyDiffuse);
-    Shape* backPlan = new InfinitePlane(Vector3D(0, 0, 3 * offset), Vector3D(0, 0, -1), blueDiffuse);
+    Shape* leftPlan = new InfinitePlan(Vector3D(-offset, 0, 0), Vector3D(1, 0, 0), redDiffuse);
+    Shape* rightPlan = new InfinitePlan(Vector3D(offset, 0, 0), Vector3D(-1, 0, 0), greenDiffuse);
+    Shape* topPlan = new InfinitePlan(Vector3D(0, offset, 0), Vector3D(0, -1, 0), greyDiffuse);
+    Shape* bottomPlan = new InfinitePlan(Vector3D(0, -offset, 0), Vector3D(0, 1, 0), greyDiffuse);
+    Shape* backPlan = new InfinitePlan(Vector3D(0, 0, 3 * offset), Vector3D(0, 0, -1), blueDiffuse);
     objectsList->push_back(leftPlan);
     objectsList->push_back(rightPlan);
     objectsList->push_back(topPlan);
     objectsList->push_back(bottomPlan);
     objectsList->push_back(backPlan);
-    */
 
     // Place the Spheres inside the Cornell Box
-   /*
     Matrix4x4 sphereTransform1;
     double radius = 1;
     sphereTransform1 = Matrix4x4::translate(Vector3D(-offset + radius, -offset + radius, 3.5));
@@ -154,11 +150,10 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     Matrix4x4 sphereTransform3;
     radius = 1;
     sphereTransform3 = Matrix4x4::translate(Vector3D(0.3, -offset + radius, 5));
-    Shape* s3 = new Sphere(radius, sphereTransform3, red_100);
+    Shape* s3 = new Sphere(radius, &sphereTransform3, red_100);
     objectsList->push_back(s1);
     objectsList->push_back(s2);
     objectsList->push_back(s3);
-    */
 
     /* ****** */
     /* Lights */
@@ -175,9 +170,6 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     lightSourceList->push_back(pointLS2);
     lightSourceList->push_back(pointLS3);
 }
-
-
-
 
 void raytrace(Camera* &cam, Shader* &shader, Film* &film,
               std::vector<Shape*>* &objectsList, std::vector<PointLightSource>* &lightSourceList)
@@ -272,8 +264,10 @@ int main()
     Camera* cam;
     std::vector<Shape*>* objectsList;
     std::vector<PointLightSource>* lightSourceList;
+    
     //Create Scene Geometry and Illumiantion
-    buildSceneSphere(cam, film, objectsList, lightSourceList);
+    //buildSceneSphere(cam, film, objectsList, lightSourceList);
+    buildSceneCornellBox(cam, film, objectsList, lightSourceList);
 
     //---------------------------------------------------------------------------
 
