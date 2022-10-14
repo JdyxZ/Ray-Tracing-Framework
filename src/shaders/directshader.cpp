@@ -53,7 +53,7 @@ Vector3D DirectShader::computeColor(const Ray & r, const std::vector<Shape*>&obj
                 reflectance = intersection.shape->getMaterial().getReflectance(n,wo,wi);
 
                 //Direct illumination
-                color += incident_light * reflectance;
+                color += incident_light * reflectance * NdotL;
             }
         }
 
