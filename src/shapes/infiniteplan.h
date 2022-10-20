@@ -16,8 +16,8 @@ public:
     // Ray/plan intersection methods
     bool rayIntersect(const Ray &ray, Intersection &its) const;
     bool rayIntersectP(const Ray &rayWorld) const;
-
-
+    bool isPointInside(const Vector3D& p) const;
+   
     // Convert triangle to String
     std::string toString() const;
 

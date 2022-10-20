@@ -1,37 +1,65 @@
 #include "directshader.h"
 #include "../core/utils.h"
 
-DirectShader::DirectShader()
-{ }
-
 DirectShader::DirectShader(Vector3D bgColor_) :
     Shader(bgColor_)
 { }
-
-Vector3D DirectShader::computeColor(const Ray& r,
-    const std::vector<Shape*>& objList,
-    const std::vector<PointLightSource>& lsList) const
+   
+Vector3D DirectShader::computeColor(const Ray & r, const std::vector<Shape*>&objList, const std::vector<PointLightSource>&lsList) const
 {
-    // Get the closest Intersection along the ray
-    Intersection its; // Auxiliar structure to store information about the intersection, in case there is one
-    if (Utils::getClosestIntersection(r, objList, its))
+    //Create an intersection instance
+    Intersection intersection = Intersection();
+
+    //Check if the camera sees a shape
+    if (Utils::getClosestIntersection(r, objList, intersection))
     {
-        Vector3D Lo(0.0);
-        //Check if Phong Material
-        if (its.shape->getMaterial().hasDiffuseOrGlossy()) {
-            for (auto const& light : lsList) {
-                Vector3D P_L = light.getPosition() - its.itsPoint; //Vector from intersection point to lightsource
-                Vector3D wi = P_L.normalized(); //Normalized Vector wi
-                Ray ray_visibility(its.itsPoint, wi, 0, Epsilon, P_L.length());
-                if (Utils::hasIntersection(ray_visibility, objList))
-                    continue;
-                Lo += light.getIntensity(its.itsPoint) * its.shape->getMaterial().getReflectance(its.normal, -r.d, wi) * dot(its.normal, wi);
+        //Declare variables
+        const Shape* shape = intersection.shape;
+        const Vector3D n = intersection.normal.normalized();
+        const Vector3D p = intersection.itsPoint;
+        const Vector3D wo = -r.d.normalized();
+        Vector3D wi;
+        double light_distance;
+        Vector3D incident_light;
+        Vector3D reflectance;
+        bool visibility;
+        Vector3D color = Vector3D();
+
+        //Check material
+        if (!shape->getMaterial().hasDiffuseOrGlossy())
+            return Vector3D();
+
+        //For each light
+        for(const PointLightSource& l : lsList)
+        {
+            //Light vector
+            wi = (l.getPosition() - p);
+            light_distance = wi.length();
+            wi /= light_distance;
+
+            //NdotL
+            const double NdotL = dot(n, wi);
+
+            //Visibility
+            visibility = !Utils::hasIntersection(Ray(p, wi, 0, Epsilon, light_distance), objList);
+            
+            //Check that light is hitting the above surface of the shape
+            if (visibility)
+            {
+                //Incident light
+                incident_light = l.getIntensity(p);
+
+                //Reflectance
+                reflectance = intersection.shape->getMaterial().getReflectance(n,wo,wi);
+
+                //Direct illumination
+                color += incident_light * reflectance * NdotL;
             }
         }
-        // Once all light sources have been taken into account, return the final result
-        return Lo;
+
+        return color;
     }
     else
         return bgColor;
-
+    
 }

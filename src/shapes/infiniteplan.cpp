@@ -62,6 +62,11 @@ bool InfinitePlan::rayIntersectP(const Ray &rayWorld) const
     return true;
 }
 
+bool InfinitePlan::isPointInside(const Vector3D& p) const
+{
+    return dot(p - p0World, nWorld) == 0.0;
+}
+
 
 std::string InfinitePlan::toString() const
 {

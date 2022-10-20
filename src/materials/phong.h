@@ -1,25 +1,24 @@
-#ifndef PHONG_H
-#define PHONG_H
-
+#pragma once
 #include "material.h"
 
 class Phong : public Material
 {
 public:
-    Phong();
-    Phong(Vector3D kd_, Vector3D ks_, double shininess_);
 
-    Vector3D getReflectance(const Vector3D& n, const Vector3D& wo, const Vector3D& wi) const;
-    bool hasSpecular() const;
-    bool hasTransmission() const;
-    bool hasDiffuseOrGlossy() const;
+	//Phong parameters
+	Vector3D kd; 
+	Vector3D ks;
+	double shininess;
 
-    ~Phong();
+	//Constructor
+	Phong() { kd = Vector3D(), ks = Vector3D(), shininess = 0.0; }
+	Phong(Vector3D kd, Vector3D ks, double shininess);
 
-private:
-    Vector3D kd;
-    Vector3D ks;
-    double shininess;
+	//Inherited methods
+	Vector3D getReflectance(const Vector3D& n, const Vector3D& wo, const Vector3D& wi) const;
+	bool hasSpecular() const;
+	bool hasTransmission() const;
+	bool hasDiffuseOrGlossy() const;
+	double getIndexOfRefraction() const;
 };
 
-#endif // PHONG_H

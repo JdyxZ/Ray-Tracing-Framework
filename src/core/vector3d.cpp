@@ -34,6 +34,11 @@ Vector3D Vector3D::operator-() const
     return Vector3D(-x, -y, -z);
 }
 
+bool Vector3D::operator==(const Vector3D& v) const
+{
+    return x == v.x && y == v.y && z == v.z;
+}
+
 // Multiply a vector by a scalar and return the result as a new object
 Vector3D Vector3D::operator*(const double a) const
 {
