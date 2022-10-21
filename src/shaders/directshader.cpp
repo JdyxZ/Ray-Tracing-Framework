@@ -96,20 +96,23 @@ Vector3D DirectShader::computeTransmissive(const Ray& r, const Intersection& i, 
 
     //Compute totalInternalReflection
     const double radicant = 1 - pow(refractive_index, 2) * (1 - pow(WOdotN, 2));
-    bool totalInternalReflection = radicant < 0 ? true : false;
+    bool totalInternalReflection = (radicant < 0);
 
     //Check whether the ray reflects or refracts
-    if (totalInternalReflection == false)
+    switch (totalInternalReflection)
     {
-        //Compute refraction direction
-        const Vector3D wt = (n * (-sqrt(radicant) + refractive_index * WOdotN) - wo * refractive_index).normalized();
-        const Ray refractedRay = Ray(p, wt, r.depth + 1);
-        return computeColor(refractedRay, objList, lsList);
-    }
-    else
-    {
-        //Compute specular reflection
-        return computeMirror(r, i, objList, lsList);
+    case(0):
+        {
+            //Compute refraction direction
+            const Vector3D wt = (n * (-sqrt(radicant) + refractive_index * WOdotN) - wo * refractive_index).normalized();
+            const Ray refractedRay = Ray(p, wt, r.depth + 1);
+            return computeColor(refractedRay, objList, lsList);
+        }
+    case(1):  
+        {
+            //Compute specular reflection
+            return computeMirror(r, i, objList, lsList);
+        }
     }    
 
 }
