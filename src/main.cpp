@@ -18,6 +18,7 @@
 #include "shaders/depthshader.h"
 #include "shaders/normalshader.h"
 #include "shaders/directshader.h"
+#include "shaders/globalshader.h"
 
 #include "materials/mirror.h"
 #include "materials/transmissive.h"
@@ -260,6 +261,7 @@ int main()
     Shader* depth_shader = new DepthShader(depthColor, maxDistance, bgColor);
     Shader* normal_shader = new NormalShader(bgColor);
     Shader* direct_shader = new DirectShader(bgColor);
+    Shader* global_shader = new GlobalShader(bgColor, Vector3D(0.2));
 
     // Build the scene---------------------------------------------------------
     // 
@@ -272,7 +274,7 @@ int main()
     //buildSceneSphere(cam, film, objectsList, lightSourceList);
     buildSceneCornellBox(cam, film, objectsList, lightSourceList);
 
-    //---------------------------------------------------------------------------
+    //--------------------------------- LAB 1 ------------------------------------------
 
     //Paint Image ONLY TASK 1
     //PaintImage(film);
@@ -289,7 +291,15 @@ int main()
     //raytrace(cam, normal_shader, film, objectsList, lightSourceList);
 
     //TASK 5
-    raytrace(cam, direct_shader, film, objectsList, lightSourceList);
+    //raytrace(cam, direct_shader, film, objectsList, lightSourceList);
+
+    //--------------------------------- LAB 2 ------------------------------------------
+
+    //Mirror and Transmissive
+    //raytrace(cam, direct_shader, film, objectsList, lightSourceList);
+
+    //Global Illumination
+    raytrace(cam, global_shader, film, objectsList, lightSourceList);
 
     // Save the final result to file
     std::cout << "\n\nSaving the result to file output.bmp\n" << std::endl;
