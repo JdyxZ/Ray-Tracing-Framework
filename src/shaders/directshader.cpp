@@ -85,17 +85,22 @@ Vector3D DirectShader::computeTransmissive(const Ray& r, const Intersection& i, 
 {
     //Declare variables
     const Shape* shape = i.shape;
-    const Vector3D n = i.normal.normalized();
-    const Vector3D p = i.itsPoint;
-    const Vector3D wo = -r.d;
-    const double WOdotN = dot(wo, n);
+    Vector3D n = i.normal.normalized();
+    Vector3D p = i.itsPoint;
+    Vector3D wo = -r.d;
+    double WOdotN = dot(wo, n);
+    double refractive_index = shape->getMaterial().getIndexOfRefraction();
 
     //Set refractive index with regard to medium change
-    double refractive_index = shape->getMaterial().getIndexOfRefraction();
-    if (WOdotN < 0) refractive_index = 1 / refractive_index;
+    if (WOdotN < 0)
+    {
+        n = -n;
+        WOdotN = dot(wo, n);
+        refractive_index = 1 / refractive_index;
+    }
 
     //Compute totalInternalReflection
-    const double radicant = 1 - pow(refractive_index, 2) * (1 - pow(WOdotN, 2));
+    double radicant = 1 - pow(refractive_index, 2) * (1 - pow(WOdotN, 2));
     bool totalInternalReflection = (radicant < 0);
 
     //Check whether the ray reflects or refracts
@@ -104,7 +109,7 @@ Vector3D DirectShader::computeTransmissive(const Ray& r, const Intersection& i, 
     case(0):
         {
             //Compute refraction direction
-            const Vector3D wt = (n * (sqrt(radicant) - refractive_index * WOdotN) - wo * refractive_index).normalized();
+            const Vector3D wt = (n * (-sqrt(radicant) + refractive_index * WOdotN) - wo * refractive_index).normalized();
             const Ray refractedRay = Ray(p, wt, r.depth + 1);
             return computeColor(refractedRay, objList, lsList);
         }
