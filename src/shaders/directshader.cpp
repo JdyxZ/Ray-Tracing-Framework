@@ -104,7 +104,7 @@ Vector3D DirectShader::computeTransmissive(const Ray& r, const Intersection& i, 
     case(0):
         {
             //Compute refraction direction
-            const Vector3D wt = (n * (-sqrt(radicant) + refractive_index * WOdotN) - wo * refractive_index).normalized();
+            const Vector3D wt = (n * (sqrt(radicant) - refractive_index * WOdotN) - wo * refractive_index).normalized();
             const Ray refractedRay = Ray(p, wt, r.depth + 1);
             return computeColor(refractedRay, objList, lsList);
         }
