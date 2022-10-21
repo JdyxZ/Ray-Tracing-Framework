@@ -30,4 +30,8 @@ double Transmissive::getIndexOfRefraction() const
 	return refractive_index;
 }
 
+Vector3D Transmissive::getDiffuseCoefficient() const
+{
+	return Vector3D();
+}
 
