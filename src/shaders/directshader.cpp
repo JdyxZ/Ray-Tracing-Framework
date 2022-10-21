@@ -5,7 +5,7 @@ DirectShader::DirectShader(Vector3D bgColor_) :
     Shader(bgColor_)
 { }
    
-Vector3D DirectShader::computeColor(const Ray & r, const std::vector<Shape*>&objList, const std::vector<PointLightSource>&lsList) const
+Vector3D DirectShader::computeColor(const Ray& r, const std::vector<Shape*>&objList, const std::vector<PointLightSource>&lsList) const
 {
 
     //Create an intersection instance

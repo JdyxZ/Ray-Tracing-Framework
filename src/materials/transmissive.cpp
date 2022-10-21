@@ -1,6 +1,6 @@
 #include "transmissive.h"
 
-Transmissive::Transmissive(float refractive_index)
+Transmissive::Transmissive(double refractive_index)
 {
 	this->refractive_index = refractive_index;
 }
