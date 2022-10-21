@@ -19,6 +19,9 @@
 #include "shaders/normalshader.h"
 #include "shaders/directshader.h"
 
+#include "materials/mirror.h"
+#include "materials/transmissive.h"
+
 using namespace std;
 
 void buildSceneSphere(Camera*& cam, Film*& film, std::vector<Shape*>*& objectsList, std::vector<PointLightSource>*& lightSourceList)
@@ -117,8 +120,8 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     Material* greenDiffuse = new Phong(Vector3D(0.2, 0.7, 0.3), Vector3D(0, 0, 0), 100);
     Material* greyDiffuse = new Phong(Vector3D(0.8, 0.8, 0.8), Vector3D(0, 0, 0), 100);
     Material* blueDiffuse = new Phong(Vector3D(0.3, 0.2, 0.7), Vector3D(0, 0, 0), 100);
-    Material* transmissive = new Phong(Vector3D(1, 1, 0.2), Vector3D(1, 1, 0.2), 20);
-    Material* mirror = new Phong(Vector3D(0.0, 0.9, 0.9), Vector3D(0.1, 0.9, 0.9), 50);
+    Material* transmissive = new Transmissive(1.1);
+    Material* mirror = new Mirror();
     Material* red_100 = new Phong(Vector3D(0.7, 0.2, 0.3), Vector3D(0.7, 0.7, 0.2), 100);
 
     /* ******* */
@@ -243,7 +246,7 @@ int main()
 
     // Create an empty film
     Film *film;
-    film = new Film(720, 512);
+    film = new Film(1920, 1080);
 
 
     // Declare the shader attributes

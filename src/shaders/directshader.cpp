@@ -1,4 +1,4 @@
-#include "directshader.h"
+﻿#include "directshader.h"
 #include "../core/utils.h"
 
 DirectShader::DirectShader(Vector3D bgColor_) :
@@ -67,10 +67,49 @@ Vector3D DirectShader::computePhong(const Ray& r, const Intersection& i, const s
 
 Vector3D DirectShader::computeMirror(const Ray& r, const Intersection& i, const std::vector<Shape*>& objList, const std::vector<PointLightSource>& lsList) const
 {
-    return Vector3D();
+    //Declare variables
+    const Vector3D n = i.normal.normalized();
+    const Vector3D p = i.itsPoint;
+    const Vector3D wo = -r.d.normalized();
+
+    //Compute reflection direction
+    const Vector3D wr = (n * 2 * dot(wo, n) - wo).normalized();
+    const Ray reflectionRay = Ray(p, wr, r.depth + 1);
+    
+    //Output
+    return computeColor(reflectionRay, objList, lsList);
+
 }
 
 Vector3D DirectShader::computeTransmissive(const Ray& r, const Intersection& i, const std::vector<Shape*>& objList, const std::vector<PointLightSource>& lsList) const
 {
-    return Vector3D();
+    //Declare variables
+    const Shape* shape = i.shape;
+    const Vector3D n = i.normal.normalized();
+    const Vector3D p = i.itsPoint;
+    const Vector3D wo = -r.d;
+    const double WOdotN = dot(wo, n);
+
+    //Set refractive index with regard to medium change
+    double refractive_index = shape->getMaterial().getIndexOfRefraction();
+    if (WOdotN < 0) refractive_index = 1 / refractive_index;
+
+    //Compute totalInternalReflection
+    const double radicant = 1 - pow(refractive_index, 2) * (1 - pow(WOdotN, 2));
+    bool totalInternalReflection = radicant < 0 ? true : false;
+
+    //Check whether the ray reflects or refracts
+    if (totalInternalReflection == false)
+    {
+        //Compute refraction direction
+        const Vector3D wt = (n * (-sqrt(radicant) + refractive_index * WOdotN) - wo * refractive_index).normalized();
+        const Ray refractedRay = Ray(p, wt, r.depth + 1);
+        return computeColor(refractedRay, objList, lsList);
+    }
+    else
+    {
+        //Compute specular reflection
+        return computeMirror(r, i, objList, lsList);
+    }    
+
 }
