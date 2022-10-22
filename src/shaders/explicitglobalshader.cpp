@@ -89,7 +89,7 @@ Vector3D ExplicitGlobalShader::computePhong(const Ray& r, const Intersection& i,
                     Vector3D reflectance = i.shape->getMaterial().getReflectance(n, sampling_direction, wo);
 
                     //Outgoing radiance
-                    outgoing_radiance = incoming_radiance * reflectance;
+                    outgoing_radiance += incoming_radiance * reflectance;
 
                 }
                 //Result
@@ -126,7 +126,7 @@ Vector3D ExplicitGlobalShader::computePhong(const Ray& r, const Intersection& i,
                     Vector3D reflectance = i.shape->getMaterial().getReflectance(n, sampling_direction, wo);
 
                     //Outgoing radiance
-                    outgoing_radiance = incoming_radiance * reflectance;
+                    outgoing_radiance += incoming_radiance * reflectance;
 
                 }
                 //Result
