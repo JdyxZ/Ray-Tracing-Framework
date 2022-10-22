@@ -7,7 +7,6 @@ Shader(bgColor_), ambient_term(ambient_term_)
 
 Vector3D GlobalShader::computeColor(const Ray& r, const std::vector<Shape*>&objList, const std::vector<PointLightSource>&lsList) const
 {
-
     //Create an intersection instance
     Intersection intersection = Intersection();
 
@@ -35,7 +34,7 @@ Vector3D GlobalShader::computePhong(const Ray& r, const Intersection& i, const s
     const Vector3D kd = i.shape->getMaterial().getDiffuseCoefficient();
     Vector3D color = Vector3D();
 
-    //For each light
+    //Direct Illumination
     for (const PointLightSource& l : lsList)
     {
         //Light vector
@@ -58,7 +57,7 @@ Vector3D GlobalShader::computePhong(const Ray& r, const Intersection& i, const s
             //Reflectance
             reflectance = i.shape->getMaterial().getReflectance(n, wo, wi);
 
-            //Direct illumination
+            //Direct illumination equation
             color += incident_light * reflectance * NdotL;
         }
     }
@@ -66,6 +65,7 @@ Vector3D GlobalShader::computePhong(const Ray& r, const Intersection& i, const s
     //Global illumination
     color += kd * ambient_term;
 
+    //Output
     return color;
 }
 

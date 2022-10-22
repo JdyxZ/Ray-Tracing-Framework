@@ -44,6 +44,9 @@ Vector3D HemisphericalSampler::getSample(const Vector3D &normal) const
     // Rotate the random direction
     randomDir = R.transformVector(randomDir);
 
+    //Normalize direction
+    randomDir.normalized();
+
     // Center the hemisphere on the provided normal
     //return rotation.transformVector(randomDir);
     return randomDir;

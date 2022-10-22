@@ -120,6 +120,9 @@
     <ClCompile Include="..\..\src\shaders\globalshader.cpp">
       <Filter>src\shaders</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\shaders\explicitglobalshader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cameras\camera.h">
@@ -201,6 +204,9 @@
       <Filter>src\materials</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\shaders\globalshader.h">
+      <Filter>src\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shaders\explicitglobalshader.h">
       <Filter>src\shaders</Filter>
     </ClInclude>
   </ItemGroup>

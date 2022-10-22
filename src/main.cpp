@@ -19,6 +19,7 @@
 #include "shaders/normalshader.h"
 #include "shaders/directshader.h"
 #include "shaders/globalshader.h"
+#include "shaders/explicitglobalshader.h"
 
 #include "materials/mirror.h"
 #include "materials/transmissive.h"
@@ -262,6 +263,7 @@ int main()
     Shader* normal_shader = new NormalShader(bgColor);
     Shader* direct_shader = new DirectShader(bgColor);
     Shader* global_shader = new GlobalShader(bgColor, Vector3D(0.2));
+    Shader* explicit_global_shader = new ExplicitGlobalShader(bgColor, Vector3D(0.2), Two_Bounces, 10);
 
     // Build the scene---------------------------------------------------------
     // 
@@ -299,7 +301,10 @@ int main()
     //raytrace(cam, direct_shader, film, objectsList, lightSourceList);
 
     //Global Illumination
-    raytrace(cam, global_shader, film, objectsList, lightSourceList);
+    //raytrace(cam, global_shader, film, objectsList, lightSourceList);
+
+    //Explicit Global Illumination 2-Bounces
+    raytrace(cam, explicit_global_shader, film, objectsList, lightSourceList);
 
     // Save the final result to file
     std::cout << "\n\nSaving the result to file output.bmp\n" << std::endl;
