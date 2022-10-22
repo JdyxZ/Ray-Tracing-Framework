@@ -3,8 +3,9 @@
 #include "../core/hemisphericalsampler.h"
 #include <math.h>
    
-ExplicitGlobalShader::ExplicitGlobalShader(Vector3D bgColor_, Vector3D ambient_term_, Bounces bounces_, double nSamples_):
-Shader(bgColor_), ambient_term(ambient_term_), bounces(bounces_), nSamples(nSamples_)
+ExplicitGlobalShader::ExplicitGlobalShader(Vector3D bgColor_, Vector3D ambient_term_, Bounces bounces_, int nSamples_, int maxDepth_):
+
+    Shader(bgColor_), ambient_term(ambient_term_), bounces(bounces_), nSamples(nSamples_), maxDepth(maxDepth_)
 { }
 
 Vector3D ExplicitGlobalShader::computeColor(const Ray& r, const std::vector<Shape*>&objList, const std::vector<PointLightSource>&lsList) const
@@ -69,48 +70,85 @@ Vector3D ExplicitGlobalShader::computePhong(const Ray& r, const Intersection& i,
     {
         case(Two_Bounces):
         {
-            switch (r.depth)
+            if (r.depth == 0)
             {
-                case(0):
+                //Declare variables
+                Vector3D outgoing_radiance = Vector3D();
+                const HemisphericalSampler* sampler = new HemisphericalSampler();
+
+                for (int j = 0; j < nSamples; j++)
                 {
-                    //Declare variables
-                    Vector3D outgoing_radiance = Vector3D();
-                    const HemisphericalSampler* sampler = new HemisphericalSampler();
+                    //Sampling ray
+                    Vector3D sampling_direction = sampler->getSample(n);
+                    const Ray sampling_ray = Ray(p, sampling_direction, r.depth + 1);
 
-                    for (int j = 0; j < nSamples; j++)
-                    {
-                        //Sampling ray
-                        Vector3D sampling_direction = sampler->getSample(n);
-                        const Ray sampling_ray = Ray(p, sampling_direction, r.depth + 1);
+                    //Incoming radiance
+                    Vector3D incoming_radiance = computeColor(sampling_ray, objList, lsList);
 
-                        //Incoming radiance
-                        Vector3D incoming_radiance = computeColor(sampling_ray, objList, lsList);
+                    //Reflectance
+                    Vector3D reflectance = i.shape->getMaterial().getReflectance(n, sampling_direction, wo);
 
-                        //Reflectance
-                        Vector3D reflectance = i.shape->getMaterial().getReflectance(n, sampling_direction, wo);
+                    //Outgoing radiance
+                    outgoing_radiance = incoming_radiance * reflectance;
 
-                        //Outgoing radiance
-                        outgoing_radiance = incoming_radiance * reflectance;
-
-                    }
-                    //Result
-                    outgoing_radiance *= 1 / (2 * M_PI * nSamples);
-                    color += outgoing_radiance;
-                    break;
                 }
-                default:
-                {
-                    //Approximation
-                    color += kd * ambient_term;
-                    break;
-                }
+                //Result
+                outgoing_radiance *= 1 / (2 * M_PI * nSamples);
+                color += outgoing_radiance;
+
+            }
+            else 
+            {
+                //Approximation
+                color += kd * ambient_term;
             }
             break;
 
         }
         case(N_Bounces):
         {
+            if (r.depth == 0)
+            {
+                //Declare variables
+                Vector3D outgoing_radiance = Vector3D();
+                const HemisphericalSampler* sampler = new HemisphericalSampler();
 
+                for (int j = 0; j < nSamples; j++)
+                {
+                    //Sampling ray
+                    Vector3D sampling_direction = sampler->getSample(n);
+                    const Ray sampling_ray = Ray(p, sampling_direction, r.depth + 1);
+
+                    //Incoming radiance
+                    Vector3D incoming_radiance = computeColor(sampling_ray, objList, lsList);
+
+                    //Reflectance
+                    Vector3D reflectance = i.shape->getMaterial().getReflectance(n, sampling_direction, wo);
+
+                    //Outgoing radiance
+                    outgoing_radiance = incoming_radiance * reflectance;
+
+                }
+                //Result
+                outgoing_radiance *= 1 / (2 * M_PI * nSamples);
+                color += outgoing_radiance;
+                 
+             }
+            else if(r.depth == maxDepth)
+            {
+                //Approximation
+                color += kd * ambient_term;
+            }
+            else
+            {
+                //Declare variables
+                Vector3D outgoing_radiance = Vector3D();
+
+                //Result
+                color += outgoing_radiance;
+     
+            }
+            break;
         }
     }
   

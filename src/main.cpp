@@ -263,7 +263,8 @@ int main()
     Shader* normal_shader = new NormalShader(bgColor);
     Shader* direct_shader = new DirectShader(bgColor);
     Shader* global_shader = new GlobalShader(bgColor, Vector3D(0.2));
-    Shader* explicit_global_shader = new ExplicitGlobalShader(bgColor, Vector3D(0.2), Two_Bounces, 10);
+    Shader* explicit_global_shader_two_bounces = new ExplicitGlobalShader(bgColor, Vector3D(0.2), Two_Bounces, 10, 5);
+    Shader* explicit_global_shader_n_bounces = new ExplicitGlobalShader(bgColor, Vector3D(0.2), N_Bounces, 10, 5);
 
     // Build the scene---------------------------------------------------------
     // 
@@ -304,7 +305,10 @@ int main()
     //raytrace(cam, global_shader, film, objectsList, lightSourceList);
 
     //Explicit Global Illumination 2-Bounces
-    raytrace(cam, explicit_global_shader, film, objectsList, lightSourceList);
+    raytrace(cam, explicit_global_shader_two_bounces, film, objectsList, lightSourceList);
+
+    //Explicit Global Illumination N-Bounces
+    //raytrace(cam, explicit_global_shader_n_bounces, film, objectsList, lightSourceList);
 
     // Save the final result to file
     std::cout << "\n\nSaving the result to file output.bmp\n" << std::endl;
