@@ -78,18 +78,19 @@ Vector3D ExplicitGlobalShader::computePhong(const Ray& r, const Intersection& i,
 
                 for (int j = 0; j < nSamples; j++)
                 {
-                    //Sampling ray
+                    //Sampling direction
                     Vector3D sampling_direction = sampler->getSample(n);
+                    const double NdotS = dot(n, sampling_direction);
                     const Ray sampling_ray = Ray(p, sampling_direction, r.depth + 1);
 
                     //Incoming radiance
                     Vector3D incoming_radiance = computeColor(sampling_ray, objList, lsList);
 
                     //Reflectance
-                    Vector3D reflectance = i.shape->getMaterial().getReflectance(n, sampling_direction, wo);
+                    Vector3D reflectance = i.shape->getMaterial().getReflectance(n, wo, sampling_direction);
 
                     //Outgoing radiance
-                    outgoing_radiance += incoming_radiance * reflectance;
+                    outgoing_radiance += incoming_radiance * reflectance * NdotS;
 
                 }
                 //Result
@@ -115,18 +116,19 @@ Vector3D ExplicitGlobalShader::computePhong(const Ray& r, const Intersection& i,
 
                 for (int j = 0; j < nSamples; j++)
                 {
-                    //Sampling ray
+                    //Sampling direction
                     Vector3D sampling_direction = sampler->getSample(n);
+                    const double NdotS = dot(n, sampling_direction);
                     const Ray sampling_ray = Ray(p, sampling_direction, r.depth + 1);
 
                     //Incoming radiance
                     Vector3D incoming_radiance = computeColor(sampling_ray, objList, lsList);
 
                     //Reflectance
-                    Vector3D reflectance = i.shape->getMaterial().getReflectance(n, sampling_direction, wo);
+                    Vector3D reflectance = i.shape->getMaterial().getReflectance(n, wo, sampling_direction);
 
                     //Outgoing radiance
-                    outgoing_radiance += incoming_radiance * reflectance;
+                    outgoing_radiance += incoming_radiance * reflectance * NdotS;
 
                 }
                 //Result
