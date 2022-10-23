@@ -136,7 +136,7 @@ Vector3D ExplicitGlobalShader::computeGlobalIllumination(const Ray& r, const Int
     const Vector3D n = i.normal.normalized();
     const Vector3D p = i.itsPoint;
     const Vector3D wo = -r.d.normalized();
-    const Vector3D kd = i.shape->getMaterial().getDiffuseCoefficient();
+    const Vector3D kd = shape->getMaterial().getDiffuseCoefficient();
 
     //Global illumination
     switch (bounces)
@@ -225,7 +225,7 @@ Vector3D ExplicitGlobalShader::computeGlobalIllumination(const Ray& r, const Int
                 outgoing_radiance += computeColor(normal_ray, objList, lsList) * shape->getMaterial().getReflectance(n, wo, n);
 
                 //Perfect Reflection Direction
-                const Vector3D wr = i.shape->getMaterial().getPerfectReflection(n, wo);
+                const Vector3D wr = shape->getMaterial().getPerfectReflection(n, wo);
                 const Ray perfect_reflection_ray = Ray(p, wr, r.depth + 1);
                 const double NdotR = dot(n, wr);
                 outgoing_radiance += computeColor(perfect_reflection_ray, objList, lsList) * shape->getMaterial().getReflectance(n, wo, wr) * NdotR;
