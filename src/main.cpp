@@ -305,10 +305,10 @@ int main()
     //raytrace(cam, global_shader, film, objectsList, lightSourceList);
 
     //Explicit Global Illumination 2-Bounces
-    //raytrace(cam, explicit_global_shader_two_bounces, film, objectsList, lightSourceList);
+    raytrace(cam, explicit_global_shader_two_bounces, film, objectsList, lightSourceList);
 
     //Explicit Global Illumination N-Bounces
-    raytrace(cam, explicit_global_shader_n_bounces, film, objectsList, lightSourceList);
+    //raytrace(cam, explicit_global_shader_n_bounces, film, objectsList, lightSourceList);
 
     // Save the final result to file
     std::cout << "\n\nSaving the result to file output.bmp\n" << std::endl;

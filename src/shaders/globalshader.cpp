@@ -8,15 +8,15 @@ Shader(bgColor_), ambient_term(ambient_term_)
 Vector3D GlobalShader::computeColor(const Ray& r, const std::vector<Shape*>&objList, const std::vector<PointLightSource>&lsList) const
 {
     //Create an intersection instance
-    Intersection intersection = Intersection();
+    Intersection i = Intersection();
 
     //Check if the camera sees a shape
-    if (!Utils::getClosestIntersection(r, objList, intersection)) return bgColor;
+    if (!Utils::getClosestIntersection(r, objList, i)) return bgColor;
 
     //Check material
-    if (intersection.shape->getMaterial().hasDiffuseOrGlossy()) return computePhong(r, intersection, objList, lsList);
-    if (intersection.shape->getMaterial().hasSpecular()) return computeMirror(r, intersection, objList, lsList);
-    if (intersection.shape->getMaterial().hasTransmission()) return computeTransmissive(r, intersection, objList, lsList);    
+    if (i.shape->getMaterial().hasDiffuseOrGlossy()) return computePhong(r, i, objList, lsList);
+    else if (i.shape->getMaterial().hasSpecular()) return computeMirror(r, i, objList, lsList);
+    else if (i.shape->getMaterial().hasTransmission()) return computeTransmissive(r, i, objList, lsList);    
 }
 
 Vector3D GlobalShader::computePhong(const Ray& r, const Intersection& i, const std::vector<Shape*>& objList, const std::vector<PointLightSource>& lsList) const
@@ -31,10 +31,9 @@ Vector3D GlobalShader::computePhong(const Ray& r, const Intersection& i, const s
     Vector3D incident_light;
     Vector3D reflectance;
     bool visibility;
-    const Vector3D kd = i.shape->getMaterial().getDiffuseCoefficient();
-    Vector3D color = Vector3D();
+    Vector3D direct_illumination = Vector3D();
 
-    //Direct Illumination
+    //Direct illumination
     for (const PointLightSource& l : lsList)
     {
         //Light vector
@@ -55,18 +54,18 @@ Vector3D GlobalShader::computePhong(const Ray& r, const Intersection& i, const s
             incident_light = l.getIntensity(p);
 
             //Reflectance
-            reflectance = i.shape->getMaterial().getReflectance(n, wo, wi);
+            reflectance = shape->getMaterial().getReflectance(n, wo, wi);
 
             //Direct illumination equation
-            color += incident_light * reflectance * NdotL;
+            direct_illumination += incident_light * reflectance * NdotL;
         }
     }
 
-    //Global illumination
-    color += kd * ambient_term;
+    //Global Illumination
+    Vector3D global_illumination = computeGlobalIllumination(i);
 
     //Output
-    return color;
+    return direct_illumination + global_illumination;
 }
 
 Vector3D GlobalShader::computeMirror(const Ray& r, const Intersection& i, const std::vector<Shape*>& objList, const std::vector<PointLightSource>& lsList) const
@@ -124,4 +123,10 @@ Vector3D GlobalShader::computeTransmissive(const Ray& r, const Intersection& i, 
     }
     }
 
+}
+
+Vector3D GlobalShader::computeGlobalIllumination(const Intersection& i) const
+{
+    Vector3D kd = i.shape->getMaterial().getDiffuseCoefficient();
+    return kd * ambient_term;
 }
