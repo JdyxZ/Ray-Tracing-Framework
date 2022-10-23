@@ -71,10 +71,10 @@ Vector3D DirectShader::computeMirror(const Ray& r, const Intersection& i, const 
     const Vector3D n = i.normal.normalized();
     const Vector3D p = i.itsPoint;
     const Vector3D wo = -r.d.normalized();
+    const Vector3D wr = i.shape->getMaterial().getPerfectReflection(n, wo);
 
-    //Compute reflection direction
-    const Vector3D wr = (n * 2 * dot(wo, n) - wo).normalized();
-    const Ray reflectionRay = Ray(p, wr, r.depth + 1);
+    //Compute perfect reflection ray
+    const Ray reflectionRay = Ray(p, wr, r.depth);
     
     //Output
     return computeColor(reflectionRay, objList, lsList);

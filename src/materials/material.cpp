@@ -5,6 +5,12 @@
 Material::Material()
 { }
 
+Vector3D Material::getPerfectReflection(const Vector3D & n, const Vector3D & wo)
+{
+    const Vector3D wr = (n * 2 * dot(wo, n) - wo).normalized();
+    return wr;
+}
+
 double Material::getIndexOfRefraction() const
 {
     std::cout << "Warning! Calling \"Material::getIndexOfRefraction()\" for a non-transmissive material"

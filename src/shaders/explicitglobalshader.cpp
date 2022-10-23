@@ -80,8 +80,10 @@ Vector3D ExplicitGlobalShader::computePhong(const Ray& r, const Intersection& i,
                 {
                     //Sampling direction
                     Vector3D sampling_direction = sampler->getSample(n);
-                    const double NdotS = dot(n, sampling_direction);
                     const Ray sampling_ray = Ray(p, sampling_direction, r.depth + 1);
+
+                    //NdotS
+                    const double NdotS = dot(n, sampling_direction);
 
                     //Incoming radiance
                     Vector3D incoming_radiance = computeColor(sampling_ray, objList, lsList);
@@ -96,7 +98,6 @@ Vector3D ExplicitGlobalShader::computePhong(const Ray& r, const Intersection& i,
                 //Result
                 outgoing_radiance *= 1 / (2 * M_PI * nSamples);
                 color += outgoing_radiance;
-
             }
             else 
             {
@@ -118,8 +119,10 @@ Vector3D ExplicitGlobalShader::computePhong(const Ray& r, const Intersection& i,
                 {
                     //Sampling direction
                     Vector3D sampling_direction = sampler->getSample(n);
-                    const double NdotS = dot(n, sampling_direction);
                     const Ray sampling_ray = Ray(p, sampling_direction, r.depth + 1);
+
+                    //NdotS
+                    const double NdotS = dot(n, sampling_direction);
 
                     //Incoming radiance
                     Vector3D incoming_radiance = computeColor(sampling_ray, objList, lsList);
@@ -144,9 +147,20 @@ Vector3D ExplicitGlobalShader::computePhong(const Ray& r, const Intersection& i,
             else
             {
                 //Declare variables
-                Vector3D outgoing_radiance = Vector3D();
+                Vector3D outgoing_radiance = Vector3D();  
 
-                //Result
+                //Normal direction
+                const Ray normal_ray = Ray(p, n, r.depth + 1);
+                outgoing_radiance += computeColor(normal_ray, objList, lsList) * i.shape->getMaterial().getReflectance(n, wo, n);
+
+                //Perfect Reflection Direction
+                const Vector3D wr = i.shape->getMaterial().getPerfectReflection(n, wo);
+                const Ray perfect_reflection_ray = Ray(p, wr, r.depth + 1);
+                const double NdotR = dot(n, wr);
+                outgoing_radiance += computeColor(perfect_reflection_ray, objList, lsList) * i.shape->getMaterial().getReflectance(n, wo, wr) * NdotR;
+
+                //Outgoing radiance
+                outgoing_radiance *= 1 / (4 * M_PI);
                 color += outgoing_radiance;
      
             }
@@ -164,9 +178,9 @@ Vector3D ExplicitGlobalShader::computeMirror(const Ray& r, const Intersection& i
     const Vector3D n = i.normal.normalized();
     const Vector3D p = i.itsPoint;
     const Vector3D wo = -r.d.normalized();
+    const Vector3D wr = i.shape->getMaterial().getPerfectReflection(n, wo);
 
-    //Compute reflection direction
-    const Vector3D wr = (n * 2 * dot(wo, n) - wo).normalized();
+    //Compute perfect reflection ray
     const Ray reflectionRay = Ray(p, wr, r.depth);
     
     //Output
