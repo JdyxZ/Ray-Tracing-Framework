@@ -299,13 +299,13 @@ int main()
     //--------------------------------- LAB 2 ------------------------------------------
 
     //Mirror and Transmissive
-    raytrace(cam, direct_shader, film, objectsList, lightSourceList);
+    //raytrace(cam, direct_shader, film, objectsList, lightSourceList);
 
     //Global Illumination
     //raytrace(cam, global_shader, film, objectsList, lightSourceList);
 
     //Explicit Global Illumination 2-Bounces
-    //raytrace(cam, explicit_global_shader_two_bounces, film, objectsList, lightSourceList);
+    raytrace(cam, explicit_global_shader_two_bounces, film, objectsList, lightSourceList);
 
     //Explicit Global Illumination N-Bounces
     //raytrace(cam, explicit_global_shader_n_bounces, film, objectsList, lightSourceList);

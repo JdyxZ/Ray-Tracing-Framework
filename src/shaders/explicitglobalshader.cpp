@@ -69,7 +69,7 @@ Vector3D ExplicitGlobalShader::computePhong(const Ray& r, const Intersection& i,
     Vector3D global_illumination = computeGlobalIllumination(r, i, objList, lsList);
   
     //Output
-    return global_illumination;
+    return direct_illumination + global_illumination;
 }
 
 Vector3D ExplicitGlobalShader::computeMirror(const Ray& r, const Intersection& i, const std::vector<Shape*>& objList, const std::vector<PointLightSource>& lsList) const
@@ -168,8 +168,8 @@ Vector3D ExplicitGlobalShader::computeGlobalIllumination(const Ray& r, const Int
 
                     //Outgoing radiance
                     outgoing_radiance += incoming_radiance * reflectance;
-
                 }
+
                 //Output
                 outgoing_radiance *= 1.0 / (2.0 * M_PI * nSamples);
                 return outgoing_radiance;

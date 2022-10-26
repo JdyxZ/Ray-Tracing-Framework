@@ -5,19 +5,18 @@ DirectShader::DirectShader(Vector3D bgColor_) :
     Shader(bgColor_)
 { }
    
-Vector3D DirectShader::computeColor(const Ray& r, const std::vector<Shape*>&objList, const std::vector<PointLightSource>&lsList) const
+Vector3D DirectShader::computeColor(const Ray& r, const std::vector<Shape*>& objList, const std::vector<PointLightSource>& lsList) const
 {
-
     //Create an intersection instance
-    Intersection intersection = Intersection();
+    Intersection i = Intersection();
 
     //Check if the camera sees a shape
-    if (!Utils::getClosestIntersection(r, objList, intersection)) return bgColor;
+    if (!Utils::getClosestIntersection(r, objList, i)) return bgColor;
 
     //Check material
-    if (intersection.shape->getMaterial().hasDiffuseOrGlossy()) return computePhong(r, intersection, objList, lsList);
-    if (intersection.shape->getMaterial().hasSpecular()) return computeMirror(r, intersection, objList, lsList);
-    if (intersection.shape->getMaterial().hasTransmission()) return computeTransmissive(r, intersection, objList, lsList);    
+    if (i.shape->getMaterial().hasDiffuseOrGlossy()) return computePhong(r, i, objList, lsList);
+    else if (i.shape->getMaterial().hasSpecular()) return computeMirror(r, i, objList, lsList);
+    else if (i.shape->getMaterial().hasTransmission()) return computeTransmissive(r, i, objList, lsList);
 }
 
 Vector3D DirectShader::computePhong(const Ray& r, const Intersection& i, const std::vector<Shape*>& objList, const std::vector<PointLightSource>& lsList) const
