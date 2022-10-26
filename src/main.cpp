@@ -263,8 +263,8 @@ int main()
     Shader* normal_shader = new NormalShader(bgColor);
     Shader* direct_shader = new DirectShader(bgColor);
     Shader* global_shader = new GlobalShader(bgColor, Vector3D(0.2));
-    Shader* explicit_global_shader_two_bounces = new ExplicitGlobalShader(bgColor, Vector3D(0.2), Two_Bounces, 50, 3);
-    Shader* explicit_global_shader_n_bounces = new ExplicitGlobalShader(bgColor, Vector3D(0.2), N_Bounces, 20, 3);
+    Shader* explicit_global_shader_two_bounces = new ExplicitGlobalShader(bgColor, Vector3D(0.2), Two_Bounces, 1024, 3);
+    Shader* explicit_global_shader_n_bounces = new ExplicitGlobalShader(bgColor, Vector3D(0.2), N_Bounces, 200, 3);
 
     // Build the scene---------------------------------------------------------
     // 
