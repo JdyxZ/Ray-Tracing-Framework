@@ -171,7 +171,8 @@ Vector3D ExplicitGlobalShader::computeGlobalIllumination(const Ray& r, const Int
                 }
 
                 //Output
-                outgoing_radiance *= 1.0 / (2.0 * M_PI * nSamples);
+                outgoing_radiance /= nSamples;
+                //outgoing_radiance *= 1.0 / (2.0 * M_PI * nSamples);
                 return outgoing_radiance;
             }
             else
@@ -208,7 +209,8 @@ Vector3D ExplicitGlobalShader::computeGlobalIllumination(const Ray& r, const Int
 
                 }
                 //Output
-                outgoing_radiance *= 1 / (2 * M_PI * nSamples);
+                outgoing_radiance /= nSamples;
+                //outgoing_radiance *= 1 / (2 * M_PI * nSamples);
                 return outgoing_radiance;
 
             }
