@@ -71,11 +71,11 @@ Vector3D DirectShader::computeMirror(const Ray& r, const Intersection& i, const 
     const Vector3D n = i.normal.normalized();
     const Vector3D p = i.itsPoint;
     const Vector3D wo = -r.d.normalized();
-    const Vector3D wr = i.shape->getMaterial().getPerfectReflection(n, wo);
 
     //Compute perfect reflection ray
+    const Vector3D wr = i.shape->getMaterial().getPerfectReflection(n, wo);
     const Ray reflectionRay = Ray(p, wr, r.depth);
-    
+
     //Output
     return computeColor(reflectionRay, objList, lsList);
 
@@ -87,7 +87,7 @@ Vector3D DirectShader::computeTransmissive(const Ray& r, const Intersection& i, 
     const Shape* shape = i.shape;
     Vector3D n = i.normal.normalized();
     Vector3D p = i.itsPoint;
-    Vector3D wo = -r.d;
+    Vector3D wo = -r.d.normalized();
     double WOdotN = dot(wo, n);
     double refractive_index = shape->getMaterial().getIndexOfRefraction();
 
@@ -110,14 +110,16 @@ Vector3D DirectShader::computeTransmissive(const Ray& r, const Intersection& i, 
         {
             //Compute refraction direction
             const Vector3D wt = (n * (-sqrt(radicant) + refractive_index * WOdotN) - wo * refractive_index).normalized();
-            const Ray refractedRay = Ray(p, wt, r.depth + 1);
+            const Ray refractedRay = Ray(p, wt, r.depth);
             return computeColor(refractedRay, objList, lsList);
         }
-    case(1):  
+    case(1):
         {
-            //Compute specular reflection
-            return computeMirror(r, i, objList, lsList);
+            //Compute perfect specular direction
+            const Vector3D wr = i.shape->getMaterial().getPerfectReflection(n, wo);
+            const Ray reflectionRay = Ray(p, wr, r.depth);
+            return computeColor(reflectionRay, objList, lsList);
         }
-    }    
+    }
 
 }
