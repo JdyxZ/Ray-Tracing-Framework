@@ -75,10 +75,10 @@ Vector3D GlobalShader::computeMirror(const Ray& r, const Intersection& i, const 
     const Vector3D p = i.itsPoint;
     const Vector3D wo = -r.d.normalized();
 
-    //Compute reflection direction
-    const Vector3D wr = (n * 2 * dot(wo, n) - wo).normalized();
-    const Ray reflectionRay = Ray(p, wr, r.depth + 1);
-    
+    //Compute perfect reflection ray
+    const Vector3D wr = i.shape->getMaterial().getPerfectReflection(n, wo);
+    const Ray reflectionRay = Ray(p, wr, r.depth);
+
     //Output
     return computeColor(reflectionRay, objList, lsList);
 
@@ -90,7 +90,7 @@ Vector3D GlobalShader::computeTransmissive(const Ray& r, const Intersection& i, 
     const Shape* shape = i.shape;
     Vector3D n = i.normal.normalized();
     Vector3D p = i.itsPoint;
-    Vector3D wo = -r.d;
+    Vector3D wo = -r.d.normalized();
     double WOdotN = dot(wo, n);
     double refractive_index = shape->getMaterial().getIndexOfRefraction();
 
@@ -110,17 +110,19 @@ Vector3D GlobalShader::computeTransmissive(const Ray& r, const Intersection& i, 
     switch (totalInternalReflection)
     {
     case(0):
-    {
-        //Compute refraction direction
-        const Vector3D wt = (n * (-sqrt(radicant) + refractive_index * WOdotN) - wo * refractive_index).normalized();
-        const Ray refractedRay = Ray(p, wt, r.depth + 1);
-        return computeColor(refractedRay, objList, lsList);
-    }
+        {
+            //Compute refraction direction
+            const Vector3D wt = (n * (-sqrt(radicant) + refractive_index * WOdotN) - wo * refractive_index).normalized();
+            const Ray refractedRay = Ray(p, wt, r.depth);
+            return computeColor(refractedRay, objList, lsList);
+        }
     case(1):
-    {
-        //Compute specular reflection
-        return computeMirror(r, i, objList, lsList);
-    }
+        {
+            //Compute perfect specular direction
+            const Vector3D wr = i.shape->getMaterial().getPerfectReflection(n, wo);
+            const Ray reflectionRay = Ray(p, wr, r.depth);
+            return computeColor(reflectionRay, objList, lsList);
+        }
     }
 
 }
