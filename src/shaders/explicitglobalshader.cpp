@@ -167,7 +167,7 @@ Vector3D ExplicitGlobalShader::computeGlobalIllumination(const Ray& r, const Int
                     const double NdotS = dot(n, sampling_direction);
 
                     //Outgoing radiance
-                    outgoing_radiance += incoming_radiance * reflectance;
+                    outgoing_radiance += incoming_radiance * reflectance * NdotS;
                 }
 
                 //Output
@@ -204,7 +204,7 @@ Vector3D ExplicitGlobalShader::computeGlobalIllumination(const Ray& r, const Int
                     const double NdotS = dot(n, sampling_direction);
 
                     //Outgoing radiance
-                    outgoing_radiance += incoming_radiance * reflectance;
+                    outgoing_radiance += incoming_radiance * reflectance * NdotS;
 
                 }
                 //Output
@@ -230,10 +230,10 @@ Vector3D ExplicitGlobalShader::computeGlobalIllumination(const Ray& r, const Int
                 const Vector3D wr = shape->getMaterial().getPerfectReflection(n, wo).normalized();
                 const Ray perfect_reflection_ray = Ray(p, wr, r.depth + 1);
                 const double NdotR = dot(n, wr);
-                outgoing_radiance += computeColor(perfect_reflection_ray, objList, lsList) * shape->getMaterial().getReflectance(n, wo, wr);
+                outgoing_radiance += computeColor(perfect_reflection_ray, objList, lsList) * shape->getMaterial().getReflectance(n, wo, wr) * NdotR;
 
                 //Outgoing radiance
-                outgoing_radiance *= 1 / (4 * M_PI);
+                outgoing_radiance *= 1.0 / (4.0 * M_PI);
                 return outgoing_radiance;
 
             }
