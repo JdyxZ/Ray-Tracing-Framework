@@ -61,7 +61,7 @@ Vector3D ExplicitGlobalShader::computePhong(const Ray& r, const Intersection& i,
             reflectance = shape->getMaterial().getReflectance(n, wo, wi);
 
             //Direct illumination equation
-            direct_illumination += incident_light * reflectance * NdotL;
+            direct_illumination += incident_light * reflectance;
         }
     }
 
@@ -168,8 +168,7 @@ Vector3D ExplicitGlobalShader::computeGlobalIllumination(const Ray& r, const Int
                 }
 
                 //Output
-                outgoing_radiance /= nSamples;
-                //outgoing_radiance *= 1.0 / (2.0 * M_PI * nSamples);
+                outgoing_radiance *= 1.0 / (2.0 * M_PI * nSamples);
                 return outgoing_radiance;
             }
             else
@@ -203,8 +202,7 @@ Vector3D ExplicitGlobalShader::computeGlobalIllumination(const Ray& r, const Int
 
                 }
                 //Output
-                outgoing_radiance /= nSamples;
-                //outgoing_radiance *= 1 / (2 * M_PI * nSamples);
+                outgoing_radiance *= 1 / (2 * M_PI * nSamples);
                 return outgoing_radiance;
 
             }
